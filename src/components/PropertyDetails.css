@@ -1,0 +1,394 @@
+/* Property Details Page */
+.property-details-page {
+  padding: 2rem 0;
+  flex: 1;
+}
+
+/* Breadcrumb */
+.breadcrumb {
+  margin-bottom: 1.5rem;
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.breadcrumb a {
+  color: #667eea;
+  text-decoration: none;
+}
+
+.breadcrumb a:hover {
+  text-decoration: underline;
+}
+
+/* Property Header */
+.property-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 2rem;
+  gap: 2rem;
+}
+
+.property-title-section h1 {
+  font-size: 2rem;
+  color: #2c3e50;
+  margin-bottom: 0.5rem;
+}
+
+.property-price-large {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #667eea;
+}
+
+.btn-favorite-large {
+  padding: 1rem 2rem;
+  font-size: 1.1rem;
+  white-space: nowrap;
+  background-color: white;
+  border: 2px solid #667eea;
+  color: #667eea;
+}
+
+.btn-favorite-large:hover:not(.is-favorite) {
+  background-color: #667eea;
+  color: white;
+}
+
+.btn-favorite-large.is-favorite {
+  background-color: #ffd700;
+  border-color: #ffd700;
+  color: #2c3e50;
+}
+
+/* Quick Info Bar */
+.property-quick-info {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.5rem;
+  background: white;
+  padding: 1.5rem;
+  border-radius: 8px;
+  margin-bottom: 2rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.property-quick-info .info-item {
+  text-align: center;
+  padding: 0.5rem;
+}
+
+.property-quick-info .info-item strong {
+  display: block;
+  color: #2c3e50;
+  margin-bottom: 0.25rem;
+  font-size: 0.9rem;
+}
+
+/* Image Gallery */
+.image-gallery {
+  background: white;
+  padding: 2rem;
+  border-radius: 8px;
+  margin-bottom: 2rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Main Gallery Image */
+.gallery-main {
+  position: relative;
+  width: 100%;
+  margin-bottom: 1rem;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.main-image {
+  width: 100%;
+  height: 500px;
+  object-fit: cover;
+  display: block;
+}
+
+/* Gallery Navigation */
+.gallery-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(255, 255, 255, 0.9);
+  border: none;
+  width: 50px;
+  height: 50px;
+  font-size: 2rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #2c3e50;
+}
+
+.gallery-nav:hover {
+  background: white;
+  transform: translateY(-50%) scale(1.1);
+}
+
+.gallery-prev {
+  left: 1rem;
+}
+
+.gallery-next {
+  right: 1rem;
+}
+
+/* Image Counter */
+.image-counter {
+  position: absolute;
+  bottom: 1rem;
+  right: 1rem;
+  background: rgba(0, 0, 0, 0.7);
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-size: 0.9rem;
+}
+
+/* Thumbnails */
+.gallery-thumbnails {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 1rem;
+}
+
+.thumbnail {
+  cursor: pointer;
+  border-radius: 4px;
+  overflow: hidden;
+  border: 3px solid transparent;
+  transition: all 0.3s ease;
+  aspect-ratio: 4/3;
+}
+
+.thumbnail:hover {
+  transform: scale(1.05);
+  border-color: #667eea;
+}
+
+.thumbnail.active {
+  border-color: #667eea;
+}
+
+.thumbnail img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Property Tabs */
+.property-tabs {
+  background: white;
+  padding: 2rem;
+  border-radius: 8px;
+  margin-bottom: 2rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.react-tabs__tab-list {
+  border-bottom: 2px solid #e0e0e0;
+  margin-bottom: 2rem;
+}
+
+.react-tabs__tab {
+  padding: 1rem 2rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #666;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.react-tabs__tab:hover {
+  color: #667eea;
+}
+
+.react-tabs__tab--selected {
+  color: #667eea;
+  border-bottom: 3px solid #667eea;
+}
+
+/* Tab Content */
+.tab-content {
+  animation: fadeIn 0.5s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.tab-content h2 {
+  font-size: 1.5rem;
+  color: #2c3e50;
+  margin-bottom: 1.5rem;
+}
+
+.description-text {
+  font-size: 1.05rem;
+  line-height: 1.8;
+  color: #666;
+}
+
+/* Floor Plan */
+.floorplan-container {
+  text-align: center;
+}
+
+.floorplan-image {
+  max-width: 100%;
+  height: auto;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+}
+
+/* Map Container */
+.map-container {
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Bottom Actions */
+.property-actions-bottom {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.btn-back {
+  background-color: #6c757d;
+  color: white;
+  padding: 1rem 2rem;
+  font-size: 1.1rem;
+}
+
+.btn-back:hover {
+  background-color: #5a6268;
+}
+
+/* Property Not Found */
+.property-not-found {
+  text-align: center;
+  padding: 4rem 2rem;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.property-not-found h2 {
+  margin-bottom: 2rem;
+  color: #2c3e50;
+}
+
+/* Responsive Design - iPad Landscape and below */
+@media (max-width: 1024px) {
+  .main-image {
+    height: 400px;
+  }
+  
+  .property-price-large {
+    font-size: 2rem;
+  }
+  
+  .gallery-thumbnails {
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  }
+}
+
+/* Responsive Design - Tablet */
+@media (max-width: 768px) {
+  .property-header {
+    flex-direction: column;
+  }
+  
+  .btn-favorite-large {
+    width: 100%;
+  }
+  
+  .property-title-section h1 {
+    font-size: 1.5rem;
+  }
+  
+  .property-price-large {
+    font-size: 1.8rem;
+  }
+  
+  .main-image {
+    height: 300px;
+  }
+  
+  .gallery-nav {
+    width: 40px;
+    height: 40px;
+    font-size: 1.5rem;
+  }
+  
+  .gallery-thumbnails {
+    grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+    gap: 0.5rem;
+  }
+  
+  .property-tabs {
+    padding: 1rem;
+  }
+  
+  .react-tabs__tab {
+    padding: 0.75rem 1rem;
+    font-size: 1rem;
+  }
+  
+  .property-quick-info {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+    padding: 1rem;
+  }
+}
+
+/* Responsive Design - Mobile */
+@media (max-width: 480px) {
+  .property-details-page {
+    padding: 1rem 0;
+  }
+  
+  .main-image {
+    height: 250px;
+  }
+  
+  .property-quick-info {
+    grid-template-columns: 1fr;
+  }
+  
+  .gallery-nav {
+    width: 35px;
+    height: 35px;
+    font-size: 1.2rem;
+  }
+  
+  .gallery-prev {
+    left: 0.5rem;
+  }
+  
+  .gallery-next {
+    right: 0.5rem;
+  }
+  
+  .image-counter {
+    font-size: 0.8rem;
+    padding: 0.4rem 0.8rem;
+  }
+}
