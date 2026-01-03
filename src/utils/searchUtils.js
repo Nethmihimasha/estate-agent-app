@@ -64,21 +64,24 @@ export const searchProperties = (properties, searchCriteria) => {
     // Date filter: build a Date for the property and parse any provided
     // criteria (which could be Date objects or ISO strings). The helper
     // `parseMaybeDate` returns null for invalid/empty inputs.
-    const propertyDate = new Date(
+    // Build property date (local) and normalize to Y/M/D to avoid timezone
+    // mismatches when comparing with UI-provided Dates.
+    let propertyDate = new Date(
       property.added.year,
       getMonthNumber(property.added.month),
       property.added.day
     );
-
-    const parseMaybeDate = (d) => {
+    const normalizeDate = (d) => {
       if (!d) return null;
-      if (d instanceof Date) return isNaN(d.getTime()) ? null : d;
-      const parsed = new Date(d);
-      return isNaN(parsed.getTime()) ? null : parsed;
+      const dt = d instanceof Date ? d : new Date(d);
+      if (isNaN(dt.getTime())) return null;
+      return new Date(dt.getFullYear(), dt.getMonth(), dt.getDate());
     };
 
-    const fromDate = parseMaybeDate(searchCriteria.dateFrom);
-    const toDate = parseMaybeDate(searchCriteria.dateTo);
+    propertyDate = normalizeDate(propertyDate);
+
+    const fromDate = normalizeDate(searchCriteria.dateFrom);
+    const toDate = normalizeDate(searchCriteria.dateTo);
 
     if (fromDate && propertyDate < fromDate) return false;
     if (toDate && propertyDate > toDate) return false;
