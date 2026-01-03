@@ -28,7 +28,7 @@ const FavoritesList = ({ favorites, removeFromFavorites, clearFavorites, addToFa
     collect: (monitor) => ({
       isOver: monitor.isOver(),
     }),
-  }));
+  }), [addToFavorites]);
 
   // Drop zone for removing favorites (trash). Dropping a favorite item here
   // will call `removeFromFavorites` with the item's id.
@@ -42,7 +42,7 @@ const FavoritesList = ({ favorites, removeFromFavorites, clearFavorites, addToFa
     collect: (monitor) => ({
       isOverTrash: monitor.isOver(),
     }),
-  }));
+  }), [removeFromFavorites]);
 
   return (
     <div 

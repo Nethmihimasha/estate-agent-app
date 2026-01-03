@@ -95,7 +95,7 @@ const PropertyCard = ({ property, onAddToFavorites, isFavorite }) => {
             disabled={isFavorite}
             title={isFavorite ? 'Already in favorites' : 'Add to favorites'}
           >
-            {isFavorite ? '★ Favorited' : '☆ Add to Favorites'}
+            {isFavorite ? 'Favorited' : 'Add to Favorites'}
           </button>
         </div>
         

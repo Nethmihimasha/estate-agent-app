@@ -119,7 +119,7 @@ const PropertyDetails = ({
             onClick={handleFavoriteToggle}
             className={`btn btn-favorite-large ${isFavorite ? 'is-favorite' : ''}`}
           >
-            {isFavorite ? '★ Remove from Favorites' : '☆ Add to Favorites'}
+            {isFavorite ? 'Remove from Favorites' : 'Add to Favorites'}
           </button>
         </div>
         
