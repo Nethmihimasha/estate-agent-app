@@ -34,6 +34,16 @@ body {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
+/* Links */
+a {
+  color: #9CAB84;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+a:hover {
+  color: #86A073;
+}
 .app-header h1 {
   font-size: 2.5rem;
   margin-bottom: 0.5rem;
@@ -43,6 +53,18 @@ body {
 .app-header p {
   font-size: 1.2rem;
   opacity: 0.9;
+}
+
+/* Primary button style (brand) */
+.btn-primary {
+  background-color: #9CAB84;
+  color: white;
+}
+
+.btn-primary:hover {
+  background-color: #86A073;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(156, 171, 132, 0.3);
 }
 
 /* Footer */
@@ -67,16 +89,6 @@ body {
   display: inline-block;
 }
 
-.btn-primary {
-  background-color: #667eea;
-  color: white;
-}
-
-.btn-primary:hover {
-  background-color: #5568d3;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(102, 126, 234, 0.3);
-}
 
 .btn-secondary {
   background-color: #6c757d;
@@ -93,16 +105,7 @@ body {
   transform: none;
 }
 
-/* Links */
-a {
-  color: #667eea;
-  text-decoration: none;
-  transition: color 0.3s ease;
-}
-
-a:hover {
-  color: #764ba2;
-}
+/* (Removed duplicated link/button blue styles.) */
 
 /* Responsive Design - Tablet and below */
 @media (max-width: 1024px) {

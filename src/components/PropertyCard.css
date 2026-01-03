@@ -50,7 +50,7 @@
 .property-price {
   font-size: 1.5rem;
   font-weight: 700;
-  color: #667eea;
+  color: #9CAB84;
   margin-bottom: 0.5rem;
 }
 
@@ -67,7 +67,7 @@
 }
 
 .property-location a:hover {
-  color: #667eea;
+  color: #9CAB84;
 }
 
 /* Property Info */
@@ -114,37 +114,37 @@
 
 .btn-view {
   flex: 1;
-  background-color: #667eea;
+  background-color: #9CAB84;
   color: white;
   text-align: center;
 }
 
 .btn-view:hover {
-  background-color: #5568d3;
+  background-color: #89A97A;
 }
 
 .btn-favorite {
   flex: 1;
   background-color: white;
-  border: 2px solid #667eea;
-  color: #667eea;
+  border: 2px solid #9CAB84;
+  color: #9CAB84;
   transition: all 0.3s ease;
 }
 
 .btn-favorite:hover:not(:disabled) {
-  background-color: #667eea;
+  background-color: #9CAB84;
   color: white;
 }
 
 .btn-favorite.is-favorite {
-  background-color: #ffd700;
-  border-color: #ffd700;
+  background-color: #F7F2DB;
+  border-color: #F7F2DB;
   color: #2c3e50;
 }
 
 .btn-favorite.is-favorite:hover {
-  background-color: #ffed4e;
-  border-color: #ffed4e;
+  background-color: #EFE9D6;
+  border-color: #EFE9D6;
 }
 
 /* Drag Hint */
