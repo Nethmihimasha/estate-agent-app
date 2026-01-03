@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import Select from 'react-select';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 import PropertyCard from './PropertyCard';
 import FavoritesList from './FavoritesList';
 import { searchProperties } from '../utils/searchUtils';
@@ -209,27 +211,31 @@ const SearchForm = ({
                 
                 {/* Date Range with React DatePicker */}
                 <div className="form-row">
-                    <div className="form-group">
-                      <label htmlFor="dateFrom">Added After</label>
-                      <input
-                        id="dateFrom"
-                        name="dateFrom"
-                        type="date"
-                        className="form-control"
-                        value={searchCriteria.dateFrom ? new Date(searchCriteria.dateFrom).toISOString().slice(0,10) : ''}
-                        onChange={(e) => setSearchCriteria({ ...searchCriteria, dateFrom: e.target.value ? new Date(e.target.value) : null })}
-                      />
-                    </div>
-                  
+                  <div className="form-group">
+                    <label htmlFor="dateFrom">Added After</label>
+                    <DatePicker
+                      id="dateFrom"
+                      selected={searchCriteria.dateFrom}
+                      onChange={(date) => setSearchCriteria({ ...searchCriteria, dateFrom: date })}
+                      dateFormat="yyyy-MM-dd"
+                      className="form-control"
+                      placeholderText="Select date"
+                      isClearable
+                      aria-label="Added After"
+                    />
+                  </div>
+
                   <div className="form-group">
                     <label htmlFor="dateTo">Added Before</label>
-                    <input
+                    <DatePicker
                       id="dateTo"
-                      name="dateTo"
-                      type="date"
+                      selected={searchCriteria.dateTo}
+                      onChange={(date) => setSearchCriteria({ ...searchCriteria, dateTo: date })}
+                      dateFormat="yyyy-MM-dd"
                       className="form-control"
-                      value={searchCriteria.dateTo ? new Date(searchCriteria.dateTo).toISOString().slice(0,10) : ''}
-                      onChange={(e) => setSearchCriteria({ ...searchCriteria, dateTo: e.target.value ? new Date(e.target.value) : null })}
+                      placeholderText="Select date"
+                      isClearable
+                      aria-label="Added Before"
                     />
                   </div>
                 </div>

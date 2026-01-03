@@ -28,8 +28,8 @@ const sampleProperty = {
 test('renders thumbnails and navigates next/prev', () => {
   render(<PropertyDetails properties={[sampleProperty]} favorites={[]} addToFavorites={() => {}} removeFromFavorites={() => {}} />);
 
-  // Thumbnails should be rendered
-  const thumbs = screen.getAllByAltText(/Thumbnail/i);
+  // Thumbnails should be rendered (alt text includes the location and index)
+  const thumbs = screen.getAllByAltText(/Test Lane\s*\d+/i);
   expect(thumbs.length).toBe(sampleProperty.images.length);
 
   // Click next arrow
