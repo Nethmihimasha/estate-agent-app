@@ -113,3 +113,42 @@ npm test -- --watchAll=false
 ```
 
 If you want me to implement further polish (add more React widgets, improve drag-out removal UX, or prepare deployment configuration), tell me which items to prioritise.
+
+## Deployment — Vercel (recommended)
+
+Deploying to Vercel is straightforward. Two options: connect the GitHub repository via the Vercel dashboard, or use the Vercel CLI.
+
+Dashboard (recommended):
+- Push your project to GitHub.
+- Go to https://vercel.com, sign in, choose "New Project" and import your GitHub repository.
+- In the project settings set the **Build Command** to `npm run build` and **Output Directory** to `build` (these are default for CRA).
+- Add any environment variables (e.g. `REACT_APP_GOOGLE_MAPS_KEY`) in the Vercel Project Settings > Environment Variables.
+- Deploy — Vercel will build and provide a live URL.
+
+Vercel CLI (alternative):
+1. Install CLI:
+```bash
+npm i -g vercel
+```
+2. Login and deploy:
+```bash
+vercel login
+vercel --prod
+```
+When prompted choose the project settings or accept defaults. Set `REACT_APP_GOOGLE_MAPS_KEY` in the Vercel dashboard for production.
+
+Notes about environment variables:
+- Never hard-code API keys into source files. Use `process.env.REACT_APP_GOOGLE_MAPS_KEY` in the app and set the value in Vercel's Environment Variables for Production (and Preview if needed).
+
+Packaging for submission:
+- Before zipping your project for coursework submission, remove `node_modules`.
+- Ensure `package.json` and `README.md` are present and the `public/images` referenced by `src/data/properties.json` are included.
+
+Live site:
+
+- https://estate-agent-g5lxashae-nethmihimashas-projects.vercel.app
+
+GitHub repository:
+
+- https://github.com/Nethmihimasha/estate-agent-app
+
