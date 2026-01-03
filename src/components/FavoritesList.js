@@ -39,8 +39,10 @@ const FavoritesList = ({ favorites, removeFromFavorites, clearFavorites, addToFa
     <div 
       ref={drop}
       className={`favorites-list ${isOver ? 'drag-over' : ''}`}
+      role="region"
+      aria-label="Favorites drop zone"
     >
-      <div ref={trashDrop} className={`trash-zone ${isOverTrash ? 'drag-over' : ''}`}>
+      <div ref={trashDrop} className={`trash-zone ${isOverTrash ? 'drag-over' : ''}`} role="button" aria-label="Drop favorite to remove">
         Drop a favourite here to remove
       </div>
       <div className="favorites-header">

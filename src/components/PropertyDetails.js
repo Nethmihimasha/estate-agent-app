@@ -21,6 +21,27 @@ const PropertyDetails = ({
   
   // Gallery state
   const [selectedImage, setSelectedImage] = useState(0);
+
+  /**
+   * Handle keyboard navigation for gallery when focused
+   */
+  const handleGalleryKeyDown = (e) => {
+    if (e.key === 'ArrowLeft') {
+      handlePrevImage();
+    } else if (e.key === 'ArrowRight') {
+      handleNextImage();
+    } else if (e.key === 'f' || e.key === 'F') {
+      // toggle fullscreen on main image container
+      const el = document.getElementById('gallery-main-image');
+      if (el) {
+        if (document.fullscreenElement) {
+          document.exitFullscreen().catch(() => {});
+        } else if (el.requestFullscreen) {
+          el.requestFullscreen().catch(() => {});
+        }
+      }
+    }
+  };
   
   if (!property) {
     return (
@@ -114,15 +135,17 @@ const PropertyDetails = ({
         {/* Image Gallery */}
         <div className="image-gallery">
           {/* Main Image */}
-          <div className="gallery-main">
-            <img 
-              src={`${process.env.PUBLIC_URL}/${property.images[selectedImage]}`}
-              alt={`${property.location} - Image ${selectedImage + 1}`}
-              className="main-image"
-              onError={(e) => {
-                e.target.src = 'https://via.placeholder.com/800x600?text=Property+Image';
-              }}
-            />
+          <div className="gallery-main" id="gallery-main" tabIndex={0} onKeyDown={handleGalleryKeyDown} aria-label="Property image gallery">
+            <div id="gallery-main-image">
+              <img 
+                src={`${process.env.PUBLIC_URL}/${property.images[selectedImage]}`}
+                alt={`${property.location} - Image ${selectedImage + 1}`}
+                className="main-image"
+                onError={(e) => {
+                  e.target.src = 'https://via.placeholder.com/800x600?text=Property+Image';
+                }}
+              />
+            </div>
             
             {/* Navigation Arrows */}
             <button 

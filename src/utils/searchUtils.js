@@ -46,9 +46,10 @@ export const searchProperties = (properties, searchCriteria) => {
       }
     }
     
-    // Postcode filter
-    if (searchCriteria.postcode && searchCriteria.postcode !== '') {
-      if (!property.postcode.toLowerCase().includes(searchCriteria.postcode.toLowerCase())) {
+    // Postcode filter: match postcode prefix (case-insensitive)
+    if (searchCriteria.postcode && searchCriteria.postcode !== '' && searchCriteria.postcode !== 'any') {
+      const prefix = String(searchCriteria.postcode).trim().toLowerCase();
+      if (!property.postcode.toLowerCase().startsWith(prefix)) {
         return false;
       }
     }

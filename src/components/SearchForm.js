@@ -22,10 +22,10 @@ const SearchForm = ({
   // Search criteria state
   const [searchCriteria, setSearchCriteria] = useState({
     type: 'any',
-    minPrice: '',
-    maxPrice: '',
-    minBedrooms: '',
-    maxBedrooms: '',
+    minPrice: 'any',
+    maxPrice: 'any',
+    minBedrooms: 'any',
+    maxBedrooms: 'any',
     postcode: '',
     dateFrom: null,
     dateTo: null
@@ -74,10 +74,10 @@ const SearchForm = ({
   const handleReset = () => {
     setSearchCriteria({
       type: 'any',
-      minPrice: '',
-      maxPrice: '',
-      minBedrooms: '',
-      maxBedrooms: '',
+      minPrice: 'any',
+      maxPrice: 'any',
+      minBedrooms: 'any',
+      maxBedrooms: 'any',
       postcode: '',
       dateFrom: null,
       dateTo: null
@@ -85,6 +85,27 @@ const SearchForm = ({
     setSearchResults(properties);
     setHasSearched(false);
   };
+
+  // Build options for react-select widgets
+  const priceOptions = [
+    { value: 'any', label: 'No min/max' },
+    { value: '50000', label: '£50,000' },
+    { value: '100000', label: '£100,000' },
+    { value: '200000', label: '£200,000' },
+    { value: '300000', label: '£300,000' },
+    { value: '400000', label: '£400,000' },
+    { value: '500000', label: '£500,000' },
+    { value: '750000', label: '£750,000' },
+    { value: '1000000', label: '£1,000,000' },
+    { value: '2000000', label: '£2,000,000' }
+  ];
+
+  const bedroomOptions = [{ value: 'any', label: 'Any' }];
+  for (let i = 0; i <= 10; i++) bedroomOptions.push({ value: String(i), label: String(i) });
+
+  const postcodeSet = new Set(properties.map(p => p.postcode.split(' ')[0].toUpperCase()));
+  const postcodeOptions = [{ value: '', label: 'Any' }];
+  Array.from(postcodeSet).forEach(pc => postcodeOptions.push({ value: pc, label: pc }));
 
   return (
     <div className="search-page">
@@ -119,84 +140,80 @@ const SearchForm = ({
                   />
                 </div>
                 
-                {/* Price Range */}
+                {/* Price Range - use react-select with predefined bands to be a React widget */}
                 <div className="form-row">
                   <div className="form-group">
                     <label htmlFor="minPrice">Min Price (£)</label>
-                    <input
-                      type="number"
-                      id="minPrice"
+                    <Select
+                      inputId="minPrice"
                       name="minPrice"
-                      value={searchCriteria.minPrice}
-                      onChange={handleInputChange}
-                      placeholder="No min"
-                      min="0"
-                      step="1000"
-                      className="form-control"
+                      classNamePrefix="react-select"
+                      value={priceOptions.find(o => o.value === searchCriteria.minPrice) || priceOptions[0]}
+                      onChange={(opt) => setSearchCriteria({ ...searchCriteria, minPrice: opt.value })}
+                      options={priceOptions}
+                      isSearchable={false}
+                      aria-label="Minimum price"
                     />
                   </div>
-                  
+
                   <div className="form-group">
                     <label htmlFor="maxPrice">Max Price (£)</label>
-                    <input
-                      type="number"
-                      id="maxPrice"
+                    <Select
+                      inputId="maxPrice"
                       name="maxPrice"
-                      value={searchCriteria.maxPrice}
-                      onChange={handleInputChange}
-                      placeholder="No max"
-                      min="0"
-                      step="1000"
-                      className="form-control"
+                      classNamePrefix="react-select"
+                      value={priceOptions.find(o => o.value === searchCriteria.maxPrice) || priceOptions[priceOptions.length - 1]}
+                      onChange={(opt) => setSearchCriteria({ ...searchCriteria, maxPrice: opt.value })}
+                      options={priceOptions}
+                      isSearchable={false}
+                      aria-label="Maximum price"
                     />
                   </div>
                 </div>
                 
-                {/* Bedrooms Range */}
+                {/* Bedrooms Range - use react-select for consistent widget behaviour */}
                 <div className="form-row">
                   <div className="form-group">
                     <label htmlFor="minBedrooms">Min Bedrooms</label>
-                    <input
-                      type="number"
-                      id="minBedrooms"
+                    <Select
+                      inputId="minBedrooms"
                       name="minBedrooms"
-                      value={searchCriteria.minBedrooms}
-                      onChange={handleInputChange}
-                      placeholder="No min"
-                      min="0"
-                      max="10"
-                      className="form-control"
+                      classNamePrefix="react-select"
+                      value={bedroomOptions.find(o => o.value === searchCriteria.minBedrooms) || bedroomOptions[0]}
+                      onChange={(opt) => setSearchCriteria({ ...searchCriteria, minBedrooms: opt.value })}
+                      options={bedroomOptions}
+                      isSearchable={false}
+                      aria-label="Minimum bedrooms"
                     />
                   </div>
-                  
+
                   <div className="form-group">
                     <label htmlFor="maxBedrooms">Max Bedrooms</label>
-                    <input
-                      type="number"
-                      id="maxBedrooms"
+                    <Select
+                      inputId="maxBedrooms"
                       name="maxBedrooms"
-                      value={searchCriteria.maxBedrooms}
-                      onChange={handleInputChange}
-                      placeholder="No max"
-                      min="0"
-                      max="10"
-                      className="form-control"
+                      classNamePrefix="react-select"
+                      value={bedroomOptions.find(o => o.value === searchCriteria.maxBedrooms) || bedroomOptions[bedroomOptions.length - 1]}
+                      onChange={(opt) => setSearchCriteria({ ...searchCriteria, maxBedrooms: opt.value })}
+                      options={bedroomOptions}
+                      isSearchable={false}
+                      aria-label="Maximum bedrooms"
                     />
                   </div>
                 </div>
                 
-                {/* Postcode */}
+                {/* Postcode area - use react-select populated from available properties */}
                 <div className="form-group">
                   <label htmlFor="postcode">Postcode Area</label>
-                  <input
-                    type="text"
-                    id="postcode"
+                  <Select
+                    inputId="postcode"
                     name="postcode"
-                    value={searchCriteria.postcode}
-                    onChange={handleInputChange}
-                    placeholder="e.g. BR1, NW1"
-                    className="form-control"
-                    maxLength="10"
+                    classNamePrefix="react-select"
+                    value={postcodeOptions.find(o => o.value === searchCriteria.postcode) || postcodeOptions[0]}
+                    onChange={(opt) => setSearchCriteria({ ...searchCriteria, postcode: opt.value })}
+                    options={postcodeOptions}
+                    isSearchable={true}
+                    aria-label="Postcode area"
                   />
                 </div>
                 
