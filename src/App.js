@@ -29,7 +29,7 @@ function App() {
       try {
         setFavorites(JSON.parse(savedFavorites));
       } catch (error) {
-        console.error('Error loading favorites:', error);
+        // Error reading saved favorites; ignore and start with empty list
       }
     }
   }, []);
