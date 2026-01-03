@@ -69,8 +69,8 @@ function App() {
       <div className="App">
         <header className="app-header">
           <div className="container">
-            <h1>Estate Agent Property Search</h1>
-            <p>Find your dream home</p>
+            <h1>Estate Agent — Property Finder</h1>
+            <p>Search, filter and save properties across multiple locations to find your ideal home.</p>
           </div>
         </header>
         
