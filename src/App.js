@@ -68,9 +68,12 @@ function App() {
     <Router>
       <div className="App">
         <header className="app-header">
-          <div className="container">
-            <h1>Estate Agent — Property Finder</h1>
-            <p>Search, filter and save properties across multiple locations to find your ideal home.</p>
+          <div className="container header-inner">
+            <img src="/images/logo.jpg" alt="Site logo" className="app-logo" />
+            <div className="header-text">
+              <h1>Find Your Dream Home</h1>
+              <p>Discover the perfect property that fits your lifestyle and budget your dream home is just a search away.</p>
+            </div>
           </div>
         </header>
         
