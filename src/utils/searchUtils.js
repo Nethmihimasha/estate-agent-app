@@ -12,75 +12,61 @@
 export const searchProperties = (properties, searchCriteria) => {
   return properties.filter(property => {
     // Type filter
-    if (searchCriteria.type && searchCriteria.type !== 'any') {
-      if (property.type.toLowerCase() !== searchCriteria.type.toLowerCase()) {
+    if (searchCriteria.type && String(searchCriteria.type).toLowerCase() !== 'any') {
+      if (property.type.toLowerCase() !== String(searchCriteria.type).toLowerCase()) {
         return false;
       }
     }
-    
-    // Min price filter
-    if (searchCriteria.minPrice && searchCriteria.minPrice !== '') {
-      if (property.price < parseInt(searchCriteria.minPrice)) {
-        return false;
-      }
-    }
-    
-    // Max price filter
-    if (searchCriteria.maxPrice && searchCriteria.maxPrice !== '') {
-      if (property.price > parseInt(searchCriteria.maxPrice)) {
-        return false;
-      }
-    }
-    
-    // Min bedrooms filter
-    if (searchCriteria.minBedrooms && searchCriteria.minBedrooms !== '') {
-      if (property.bedrooms < parseInt(searchCriteria.minBedrooms)) {
-        return false;
-      }
-    }
-    
-    // Max bedrooms filter
-    if (searchCriteria.maxBedrooms && searchCriteria.maxBedrooms !== '') {
-      if (property.bedrooms > parseInt(searchCriteria.maxBedrooms)) {
-        return false;
-      }
-    }
-    
+
+    // Parse numeric criteria safely; treat 'any' or empty as unset
+    const parseMaybeNumber = (v) => {
+      if (v === undefined || v === null) return null;
+      if (String(v).toLowerCase() === 'any' || String(v).trim() === '') return null;
+      const n = Number(String(v));
+      return Number.isNaN(n) ? null : n;
+    };
+
+    const minP = parseMaybeNumber(searchCriteria.minPrice);
+    const maxP = parseMaybeNumber(searchCriteria.maxPrice);
+    const minB = parseMaybeNumber(searchCriteria.minBedrooms);
+    const maxB = parseMaybeNumber(searchCriteria.maxBedrooms);
+
+    // Min/Max price
+    if (minP !== null && property.price < minP) return false;
+    if (maxP !== null && property.price > maxP) return false;
+
+    // Min/Max bedrooms
+    if (minB !== null && property.bedrooms < minB) return false;
+    if (maxB !== null && property.bedrooms > maxB) return false;
+
     // Postcode filter: match postcode prefix (case-insensitive)
-    if (searchCriteria.postcode && searchCriteria.postcode !== '' && searchCriteria.postcode !== 'any') {
+    if (searchCriteria.postcode && String(searchCriteria.postcode).trim() !== '' && String(searchCriteria.postcode).toLowerCase() !== 'any') {
       const prefix = String(searchCriteria.postcode).trim().toLowerCase();
       if (!property.postcode.toLowerCase().startsWith(prefix)) {
         return false;
       }
     }
-    
-    // Date filter
-    if (searchCriteria.dateFrom) {
-      const propertyDate = new Date(
-        property.added.year, 
-        getMonthNumber(property.added.month), 
-        property.added.day
-      );
-      const fromDate = new Date(searchCriteria.dateFrom);
-      
-      if (propertyDate < fromDate) {
-        return false;
-      }
-    }
-    
-    if (searchCriteria.dateTo) {
-      const propertyDate = new Date(
-        property.added.year, 
-        getMonthNumber(property.added.month), 
-        property.added.day
-      );
-      const toDate = new Date(searchCriteria.dateTo);
-      
-      if (propertyDate > toDate) {
-        return false;
-      }
-    }
-    
+
+    // Date filter: normalize property date once
+    const propertyDate = new Date(
+      property.added.year,
+      getMonthNumber(property.added.month),
+      property.added.day
+    );
+
+    const parseMaybeDate = (d) => {
+      if (!d) return null;
+      if (d instanceof Date) return isNaN(d.getTime()) ? null : d;
+      const parsed = new Date(d);
+      return isNaN(parsed.getTime()) ? null : parsed;
+    };
+
+    const fromDate = parseMaybeDate(searchCriteria.dateFrom);
+    const toDate = parseMaybeDate(searchCriteria.dateTo);
+
+    if (fromDate && propertyDate < fromDate) return false;
+    if (toDate && propertyDate > toDate) return false;
+
     return true;
   });
 };

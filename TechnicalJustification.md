@@ -41,6 +41,29 @@ This document maps the coursework rubric to the implementation in this project a
 - CSP meta tag added in `public/index.html`; note that CRA development mode requires some relaxations (inline styles). For submission, production CSP should avoid `unsafe-eval` and `unsafe-inline` where possible.
 - Images provide alt text; a lint warning about redundant wording was corrected or can be adjusted to concise descriptions.
 
+Additional detail — CSP change
+- I tightened the Content Security Policy in `public/index.html` to remove `'unsafe-inline'` from `style-src` and only allow styles from the app origin. This reduces the risk of injected inline styles being exploited. Note: Create React App may inject small inline styles at runtime (development). For production builds the app bundles CSS files; verify the site after `npm run build` and, if necessary, host CSS as external files or add a strict nonce strategy. Document this choice in the viva and include the production CSP header if your deployment host supports it.
+
+Accessibility choices and keyboard behaviour
+- Controls: All form controls use accessible labels and `react-select`/`react-datepicker` which provide keyboard support and ARIA roles.
+- Gallery: The image gallery in `src/components/PropertyDetails.js` now supports keyboard navigation: `ArrowLeft` and `ArrowRight` move images, and pressing `f` attempts fullscreen toggle for the main image container. The gallery container has `tabIndex` and an ARIA label for screen readers.
+- Drag-and-drop: Favorites drop zones now include ARIA attributes (`role="region"` and `aria-label`) and the trash zone exposes `role="button"` to make intent clearer to assistive tech.
+- Recommendations: add focus-visible styles, ensure color contrast meets WCAG AA, and test with a keyboard-only workflow and a screen reader during the viva.
+
+Suggested commit sequence (small, focused commits)
+- `feat(data): add 7 diverse properties to properties.json` — initial JSON dataset
+- `feat(ui): replace select and date inputs with react-select and react-datepicker` — widget enhancements
+- `feat(search): implement robust multi-criteria search` — `searchUtils` implementation
+- `fix(search): handle 'any' and normalize numeric/date inputs` — parsing hardening and tests
+- `feat(favs): add drag-and-drop + button favorites with localStorage persistence` — favorites UX
+- `feat(details): add gallery thumbnails, keyboard navigation and tabs` — property page improvements
+- `test: add Jest tests for search, gallery and favorites persistence` — testing coverage
+- `chore(security): tighten CSP and sanitize inputs` — CSP + DOMPurify
+- `style: polish layout/typography and responsive media queries` — aesthetics tweaks
+- `build: deploy to <your-host> and add live URL to README/TechnicalJustification` — deployment commit (include URL)
+
+When you push these commits with concise messages, the repo history will clearly document incremental development for marking.
+
 10. Testing (12%)
 - Jest tests in `src/__tests__` include meaningful unit tests for search logic and component behavior (>=5 tests). Tests were adapted to run in the environment while mocking ESM modules where necessary.
 
