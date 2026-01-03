@@ -74,9 +74,9 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/t
 
 Live site:
 
-- https://estate-agent-g5lxashae-nethmihimashas-projects.vercel.app
+- https://estate-agent-app-indol.vercel.app
 
 GitHub repository:
 
-- https://github.com/Nethmihimasha/estate-agent-app
+- https://github.com/Nethmihimasha/estate-agent-app.git
 
