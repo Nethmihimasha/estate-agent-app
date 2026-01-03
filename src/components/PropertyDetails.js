@@ -144,9 +144,9 @@ const PropertyDetails = ({
           {/* Main Image */}
           <div className="gallery-main" id="gallery-main" tabIndex={0} onKeyDown={handleGalleryKeyDown} aria-label="Property image gallery">
             <div id="gallery-main-image">
-              <img 
+              <img
                 src={`${process.env.PUBLIC_URL}/${property.images[selectedImage]}`}
-                alt={`${property.location} - Image ${selectedImage + 1}`}
+                alt={`${property.location} — view ${selectedImage + 1}`}
                 className="main-image"
                 onError={(e) => {
                   e.target.src = 'https://via.placeholder.com/800x600?text=Property+Image';
@@ -179,14 +179,14 @@ const PropertyDetails = ({
           {/* Thumbnail Images */}
           <div className="gallery-thumbnails">
             {property.images.map((image, index) => (
-              <div 
+              <div
                 key={index}
                 onClick={() => handleThumbnailClick(index)}
                 className={`thumbnail ${index === selectedImage ? 'active' : ''}`}
               >
-                <img 
+                <img
                   src={`${process.env.PUBLIC_URL}/${image}`}
-                  alt={`Thumbnail ${index + 1}`}
+                  alt={`${property.location} ${index + 1}`}
                   onError={(e) => {
                     e.target.src = 'https://via.placeholder.com/150x100?text=Thumb';
                   }}
@@ -220,9 +220,9 @@ const PropertyDetails = ({
               <div className="tab-content">
                 <h2>Floor Plan</h2>
                 <div className="floorplan-container">
-                  <img 
+                  <img
                     src={`${process.env.PUBLIC_URL}/${property.floorplan}`}
-                    alt="Floor Plan"
+                    alt={`${property.location} floor plan`}
                     className="floorplan-image"
                     onError={(e) => {
                       e.target.src = 'https://via.placeholder.com/800x600?text=Floor+Plan';

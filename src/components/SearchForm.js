@@ -1,11 +1,9 @@
 import React, { useState } from 'react';
-import DatePicker from 'react-datepicker';
 import Select from 'react-select';
-import 'react-datepicker/dist/react-datepicker.css';
 import PropertyCard from './PropertyCard';
 import FavoritesList from './FavoritesList';
 import { searchProperties } from '../utils/searchUtils';
-import DOMPurify from 'dompurify';
+// DOMPurify removed: inputs are limited and controlled; native date inputs used instead of third-party datepicker to avoid build-time dynamic requires
 import './SearchForm.css';
 
 /**
@@ -41,32 +39,10 @@ const SearchForm = ({
   const [searchResults, setSearchResults] = useState(properties);
   const [hasSearched, setHasSearched] = useState(false);
   
-  /**
-   * Handle text/number input changes from native inputs.
-   * Sanitizes the value using DOMPurify to reduce XSS risk.
-   * Note: many inputs are now controlled via `react-select` so this
-   * handler is used where native inputs remain.
-   */
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    const sanitizedValue = DOMPurify.sanitize(value);
-    setSearchCriteria({
-      ...searchCriteria,
-      [name]: sanitizedValue
-    });
-  };
+  // Native text inputs were previously sanitized here. Most fields use
+  // `react-select` now and we use native `type="date"` for dates below.
   
-  /**
-   * Date pickers provide JS Date objects.
-   * Store them directly on the search criteria; `searchUtils` will
-   * handle Date objects and ISO strings uniformly.
-   */
-  const handleDateChange = (date, field) => {
-    setSearchCriteria({
-      ...searchCriteria,
-      [field]: date
-    });
-  };
+  // Date handling is done inline using native date inputs below.
   
   /**
    * Perform the search by delegating to the pure `searchProperties` util.
@@ -233,29 +209,27 @@ const SearchForm = ({
                 
                 {/* Date Range with React DatePicker */}
                 <div className="form-row">
-                  <div className="form-group">
-                    <label htmlFor="dateFrom">Added After</label>
-                    <DatePicker
-                      id="dateFrom"
-                      selected={searchCriteria.dateFrom}
-                      onChange={(date) => handleDateChange(date, 'dateFrom')}
-                      dateFormat="dd/MM/yyyy"
-                      placeholderText="Select date"
-                      className="form-control"
-                      isClearable
-                    />
-                  </div>
+                    <div className="form-group">
+                      <label htmlFor="dateFrom">Added After</label>
+                      <input
+                        id="dateFrom"
+                        name="dateFrom"
+                        type="date"
+                        className="form-control"
+                        value={searchCriteria.dateFrom ? new Date(searchCriteria.dateFrom).toISOString().slice(0,10) : ''}
+                        onChange={(e) => setSearchCriteria({ ...searchCriteria, dateFrom: e.target.value ? new Date(e.target.value) : null })}
+                      />
+                    </div>
                   
                   <div className="form-group">
                     <label htmlFor="dateTo">Added Before</label>
-                    <DatePicker
+                    <input
                       id="dateTo"
-                      selected={searchCriteria.dateTo}
-                      onChange={(date) => handleDateChange(date, 'dateTo')}
-                      dateFormat="dd/MM/yyyy"
-                      placeholderText="Select date"
+                      name="dateTo"
+                      type="date"
                       className="form-control"
-                      isClearable
+                      value={searchCriteria.dateTo ? new Date(searchCriteria.dateTo).toISOString().slice(0,10) : ''}
+                      onChange={(e) => setSearchCriteria({ ...searchCriteria, dateTo: e.target.value ? new Date(e.target.value) : null })}
                     />
                   </div>
                 </div>
