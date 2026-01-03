@@ -6,14 +6,23 @@ import propertiesData from './data/properties.json';
 import './App.css';
 
 /**
- * Main App component that manages routing and global state
- * Handles favorites list and property data
+ * App
+ * Root component that wires routing and global state. Responsibilities:
+ * - hold the `favorites` state and persist it to `localStorage`
+ * - pass favorites handlers to child components
+ *
+ * Persisting favorites in localStorage allows the user's choices to survive
+ * page reloads. We read on mount and write on every change; this is simple
+ * and acceptable for this coursework app (no server storage required).
  */
 function App() {
-  // State for storing favorite properties
+  // Favorites are stored as an array of property objects. We intentionally
+  // store the full object to keep the UI simple; for larger apps storing
+  // only ids and fetching details on demand would be preferable.
   const [favorites, setFavorites] = useState([]);
-  
-  // Load favorites from localStorage on mount
+
+  // Load favorites from localStorage on mount and recover gracefully if
+  // the stored value is corrupted.
   useEffect(() => {
     const savedFavorites = localStorage.getItem('favoriteProperties');
     if (savedFavorites) {
@@ -24,31 +33,32 @@ function App() {
       }
     }
   }, []);
-  
-  // Save favorites to localStorage whenever they change
+
+  // Persist favorites on every change. This is synchronous and simple; for
+  // large data sets consider throttling or batching writes.
   useEffect(() => {
     localStorage.setItem('favoriteProperties', JSON.stringify(favorites));
   }, [favorites]);
-  
+
   /**
-   * Add a property to favorites
-   * Prevents duplicates by checking if property already exists
+   * Add a property to favorites, preventing duplicates by `id`.
+   * Exposed to PropertyCard and PropertyDetails.
    */
   const addToFavorites = (property) => {
     if (!favorites.some(fav => fav.id === property.id)) {
       setFavorites([...favorites, property]);
     }
   };
-  
+
   /**
-   * Remove a property from favorites by ID
+   * Remove by id and update state.
    */
   const removeFromFavorites = (propertyId) => {
     setFavorites(favorites.filter(fav => fav.id !== propertyId));
   };
-  
+
   /**
-   * Clear all favorites
+   * Clear the entire favorites list (used by the Clear All button).
    */
   const clearFavorites = () => {
     setFavorites([]);

@@ -7,7 +7,9 @@ import App from './App';
 
 /**
  * Application entry point
- * Wraps App with DndProvider for drag-and-drop functionality
+ * - Wraps the app in React DnD's `DndProvider` so components can
+ *   register drag sources and drop targets.
+ * - Rendered inside `#root` by ReactDOM.
  */
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(

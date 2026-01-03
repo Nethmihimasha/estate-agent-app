@@ -5,8 +5,16 @@ import { formatPrice } from '../utils/searchUtils';
 import './FavoritesList.css';
 
 /**
- * FavoritesList component - displays and manages favorite properties
- * Implements drop zone for drag-and-drop functionality
+ * FavoritesList
+ * Props:
+ * - favorites: array of favorited property objects
+ * - removeFromFavorites(id): remove a property by id
+ * - clearFavorites(): clear all favorites
+ * - addToFavorites(property): add a property (used by drop)
+ *
+ * The component exposes two drop zones:
+ * - the main container accepts dragged 'property' items to add them
+ * - the trash zone accepts dragged 'favorite' items to remove them
  */
 const FavoritesList = ({ favorites, removeFromFavorites, clearFavorites, addToFavorites }) => {
   // Setup drop zone for dragged properties
@@ -22,7 +30,8 @@ const FavoritesList = ({ favorites, removeFromFavorites, clearFavorites, addToFa
     }),
   }));
 
-  // Drop zone for removing favorites (trash)
+  // Drop zone for removing favorites (trash). Dropping a favorite item here
+  // will call `removeFromFavorites` with the item's id.
   const [{ isOverTrash }, trashDrop] = useDrop(() => ({
     accept: 'favorite',
     drop: (item) => {
@@ -80,6 +89,10 @@ const FavoritesList = ({ favorites, removeFromFavorites, clearFavorites, addToFa
 
 /**
  * Individual favorite property item
+ */
+/**
+ * FavoriteItem - small draggable representation of a favorited property.
+ * Dragging it allows dropping it into the trash drop zone to remove.
  */
 const FavoriteItem = ({ property, onRemove }) => {
   const [{ isDragging }, drag] = useDrag(() => ({

@@ -1,6 +1,12 @@
 /**
  * Utility functions for property searching
- * Handles filtering by type, price, bedrooms, date, and postcode
+ * Handles filtering by type, price, bedrooms, date, and postcode.
+ *
+ * Notes:
+ * - Search criteria values may come from UI widgets and can be strings
+ *   (including the literal 'any') or Date objects / ISO strings for dates.
+ * - The main `searchProperties` function normalizes inputs safely and
+ *   ignores unspecified criteria.
  */
 
 /**
@@ -8,6 +14,13 @@
  * @param {Array} properties - Array of property objects
  * @param {Object} searchCriteria - Object containing search parameters
  * @returns {Array} Filtered array of properties matching criteria
+ */
+/**
+ * Filter an array of properties using the provided criteria.
+ * @param {Array<Object>} properties - list of property objects
+ * @param {Object} searchCriteria - may include: type, minPrice, maxPrice,
+ *   minBedrooms, maxBedrooms, postcode, dateFrom, dateTo
+ * @returns {Array<Object>} filtered properties
  */
 export const searchProperties = (properties, searchCriteria) => {
   return properties.filter(property => {
@@ -18,7 +31,8 @@ export const searchProperties = (properties, searchCriteria) => {
       }
     }
 
-    // Parse numeric criteria safely; treat 'any' or empty as unset
+    // Safely parse numeric-like inputs coming from UI widgets.
+    // Returns `null` when the value should be treated as unset (e.g. 'any' or empty).
     const parseMaybeNumber = (v) => {
       if (v === undefined || v === null) return null;
       if (String(v).toLowerCase() === 'any' || String(v).trim() === '') return null;
@@ -47,7 +61,9 @@ export const searchProperties = (properties, searchCriteria) => {
       }
     }
 
-    // Date filter: normalize property date once
+    // Date filter: build a Date for the property and parse any provided
+    // criteria (which could be Date objects or ISO strings). The helper
+    // `parseMaybeDate` returns null for invalid/empty inputs.
     const propertyDate = new Date(
       property.added.year,
       getMonthNumber(property.added.month),

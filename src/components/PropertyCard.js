@@ -5,8 +5,17 @@ import { formatPrice, formatDate } from '../utils/searchUtils';
 import './PropertyCard.css';
 
 /**
- * PropertyCard component - displays property in search results
- * Implements drag-and-drop for favorites functionality
+ * PropertyCard
+ * A compact card used in search results that shows the main image,
+ * price, location and a short description. It also supports two
+ * ways to add a property to favorites:
+ * - click the favorite button
+ * - drag the card into the favorites drop zone
+ *
+ * Props:
+ * - property: object with property data
+ * - onAddToFavorites(property): add to favorites callback
+ * - isFavorite: boolean indicating if already favorited (disables button)
  */
 const PropertyCard = ({ property, onAddToFavorites, isFavorite }) => {
   // Setup drag functionality for adding to favorites
@@ -18,9 +27,8 @@ const PropertyCard = ({ property, onAddToFavorites, isFavorite }) => {
     }),
   }));
   
-  /**
-   * Handle favorite button click
-   */
+  // Adds the property to favorites when the button is pressed.
+  // Note: `App` prevents duplicates server-side by checking `id`.
   const handleFavoriteClick = () => {
     onAddToFavorites(property);
   };

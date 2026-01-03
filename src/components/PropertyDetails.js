@@ -6,8 +6,12 @@ import { formatPrice, formatDate } from '../utils/searchUtils';
 import './PropertyDetails.css';
 
 /**
- * PropertyDetails component - displays detailed property information
- * Includes image gallery, tabs for description/floorplan/map, and favorites
+ * PropertyDetails
+ * Shows a single property's full details including a gallery with
+ * thumbnails, keyboard navigation, tabs for long description, floor
+ * plan and an embedded map. Props:
+ * - properties: array of all properties (used to find the current one by id)
+ * - favorites, addToFavorites, removeFromFavorites: favorites handlers
  */
 const PropertyDetails = ({ 
   properties, 
@@ -23,7 +27,11 @@ const PropertyDetails = ({
   const [selectedImage, setSelectedImage] = useState(0);
 
   /**
-   * Handle keyboard navigation for gallery when focused
+   * Keyboard handlers for the gallery. This makes the gallery accessible
+   * to keyboard-only users: left/right arrows navigate images and `f`
+   * attempts to toggle fullscreen for the focused image container.
+   * We guard against browsers/environments that do not support the
+   * Fullscreen API by catching errors silently.
    */
   const handleGalleryKeyDown = (e) => {
     if (e.key === 'ArrowLeft') {
@@ -31,7 +39,6 @@ const PropertyDetails = ({
     } else if (e.key === 'ArrowRight') {
       handleNextImage();
     } else if (e.key === 'f' || e.key === 'F') {
-      // toggle fullscreen on main image container
       const el = document.getElementById('gallery-main-image');
       if (el) {
         if (document.fullscreenElement) {

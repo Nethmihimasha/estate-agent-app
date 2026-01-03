@@ -9,8 +9,14 @@ import DOMPurify from 'dompurify';
 import './SearchForm.css';
 
 /**
- * SearchForm component with enhanced React widgets
- * Handles property search with multiple criteria
+ * SearchForm
+ * Props:
+ * - properties: Array of property objects used to populate results and postcode options
+ * - favorites, addToFavorites, removeFromFavorites, clearFavorites: callbacks/state for favorites
+ *
+ * This component uses `react-select` and `react-datepicker` for accessible
+ * widgets. Inputs coming from the widgets can be strings (e.g. 'any') or
+ * numbers/dates; the search util normalizes these values.
  */
 const SearchForm = ({ 
   properties, 
@@ -36,11 +42,13 @@ const SearchForm = ({
   const [hasSearched, setHasSearched] = useState(false);
   
   /**
-   * Handle form input changes with HTML encoding for security
+   * Handle text/number input changes from native inputs.
+   * Sanitizes the value using DOMPurify to reduce XSS risk.
+   * Note: many inputs are now controlled via `react-select` so this
+   * handler is used where native inputs remain.
    */
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    // Sanitize input to prevent XSS
     const sanitizedValue = DOMPurify.sanitize(value);
     setSearchCriteria({
       ...searchCriteria,
@@ -49,7 +57,9 @@ const SearchForm = ({
   };
   
   /**
-   * Handle date picker changes
+   * Date pickers provide JS Date objects.
+   * Store them directly on the search criteria; `searchUtils` will
+   * handle Date objects and ISO strings uniformly.
    */
   const handleDateChange = (date, field) => {
     setSearchCriteria({
@@ -59,7 +69,9 @@ const SearchForm = ({
   };
   
   /**
-   * Handle form submission and search
+   * Perform the search by delegating to the pure `searchProperties` util.
+   * The util expects criteria in a flexible form (strings, numbers, Dates)
+   * and performs normalization; keeping the util pure makes it testable.
    */
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -86,7 +98,7 @@ const SearchForm = ({
     setHasSearched(false);
   };
 
-  // Build options for react-select widgets
+  // Build options for react-select widgets (kept local to the component)
   const priceOptions = [
     { value: 'any', label: 'No min/max' },
     { value: '50000', label: '£50,000' },
@@ -103,6 +115,8 @@ const SearchForm = ({
   const bedroomOptions = [{ value: 'any', label: 'Any' }];
   for (let i = 0; i <= 10; i++) bedroomOptions.push({ value: String(i), label: String(i) });
 
+  // Derive postcode options from available property data so users can
+  // quickly select a prefix. The UI still allows searching by typing.
   const postcodeSet = new Set(properties.map(p => p.postcode.split(' ')[0].toUpperCase()));
   const postcodeOptions = [{ value: '', label: 'Any' }];
   Array.from(postcodeSet).forEach(pc => postcodeOptions.push({ value: pc, label: pc }));
