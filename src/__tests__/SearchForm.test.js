@@ -1,10 +1,26 @@
 // src/__tests__/SearchForm.test.js
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
-import { BrowserRouter } from 'react-router-dom';
-import { DndProvider } from 'react-dnd';
-import { HTML5Backend } from 'react-dnd-html5-backend';
-import SearchForm from '../components/SearchForm';
+
+// Keep all `import` statements at the top to satisfy ESLint `import/first`.
+// Mock ESM modules before requiring the components that import them.
+jest.mock('react-dnd', () => ({
+  DndProvider: ({ children }) => children,
+  useDrag: () => [{ isDragging: false }, () => {}],
+  useDrop: () => [{ isOver: false }, () => {}],
+}));
+
+jest.mock('react-dnd-html5-backend', () => ({
+  HTML5Backend: () => ({}),
+}));
+
+// Lightweight router wrapper to avoid importing react-router-dom in tests
+const RouterWrapper = ({ children }) => <div>{children}</div>;
+
+// Require mocked modules and components after mocking to avoid ESM parsing issues
+const { DndProvider } = require('react-dnd');
+const { HTML5Backend } = require('react-dnd-html5-backend');
+const SearchForm = require('../components/SearchForm').default;
 
 const mockProperties = [
   {
@@ -23,11 +39,11 @@ const mockProperties = [
 
 const renderWithProviders = (component) => {
   return render(
-    <BrowserRouter>
+    <RouterWrapper>
       <DndProvider backend={HTML5Backend}>
         {component}
       </DndProvider>
-    </BrowserRouter>
+    </RouterWrapper>
   );
 };
 
@@ -43,12 +59,12 @@ describe('SearchForm Component', () => {
       />
     );
     
-    expect(screen.getByLabelText(/property type/i)).toBeInTheDocument();
-    expect(screen.getByLabelText(/min price/i)).toBeInTheDocument();
-    expect(screen.getByLabelText(/max price/i)).toBeInTheDocument();
-    expect(screen.getByLabelText(/min bedrooms/i)).toBeInTheDocument();
-    expect(screen.getByLabelText(/max bedrooms/i)).toBeInTheDocument();
-    expect(screen.getByLabelText(/postcode area/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/property type/i)).toBeTruthy();
+    expect(screen.getByLabelText(/min price/i)).toBeTruthy();
+    expect(screen.getByLabelText(/max price/i)).toBeTruthy();
+    expect(screen.getByLabelText(/min bedrooms/i)).toBeTruthy();
+    expect(screen.getByLabelText(/max bedrooms/i)).toBeTruthy();
+    expect(screen.getByLabelText(/postcode area/i)).toBeTruthy();
   });
 
   test('displays all properties initially', () => {
@@ -62,7 +78,7 @@ describe('SearchForm Component', () => {
       />
     );
     
-    expect(screen.getByText(/all properties \(1\)/i)).toBeInTheDocument();
+    expect(screen.getByText(/all properties \(1\)/i)).toBeTruthy();
   });
 
   test('updates search results count after search', () => {
@@ -79,7 +95,7 @@ describe('SearchForm Component', () => {
     const searchButton = screen.getByRole('button', { name: /search properties/i });
     fireEvent.click(searchButton);
     
-    expect(screen.getByText(/1 properties found/i)).toBeInTheDocument();
+    expect(screen.getByText(/1 properties found/i)).toBeTruthy();
   });
 
   test('reset button clears search criteria', () => {

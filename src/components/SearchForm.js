@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import DatePicker from 'react-datepicker';
+import Select from 'react-select';
 import 'react-datepicker/dist/react-datepicker.css';
 import PropertyCard from './PropertyCard';
 import FavoritesList from './FavoritesList';
@@ -98,17 +99,24 @@ const SearchForm = ({
                 {/* Property Type Select */}
                 <div className="form-group">
                   <label htmlFor="type">Property Type</label>
-                  <select
-                    id="type"
+                  <Select
+                    inputId="type"
                     name="type"
-                    value={searchCriteria.type}
-                    onChange={handleInputChange}
-                    className="form-control"
-                  >
-                    <option value="any">Any</option>
-                    <option value="house">House</option>
-                    <option value="flat">Flat</option>
-                  </select>
+                    classNamePrefix="react-select"
+                    value={[
+                      { value: 'any', label: 'Any' },
+                      { value: 'House', label: 'House' },
+                      { value: 'Flat', label: 'Flat' }
+                    ].find(o => o.value === searchCriteria.type) || { value: 'any', label: 'Any' }}
+                    onChange={(opt) => setSearchCriteria({ ...searchCriteria, type: opt.value })}
+                    options={[
+                      { value: 'any', label: 'Any' },
+                      { value: 'House', label: 'House' },
+                      { value: 'Flat', label: 'Flat' }
+                    ]}
+                    isSearchable={false}
+                    aria-label="Property Type"
+                  />
                 </div>
                 
                 {/* Price Range */}
@@ -267,6 +275,7 @@ const SearchForm = ({
               favorites={favorites}
               removeFromFavorites={removeFromFavorites}
               clearFavorites={clearFavorites}
+              addToFavorites={addToFavorites}
             />
           </aside>
         </div>

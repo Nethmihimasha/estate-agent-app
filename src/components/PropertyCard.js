@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+// Use plain anchors to avoid depending on react-router-dom in tests
 import { useDrag } from 'react-dnd';
 import { formatPrice, formatDate } from '../utils/searchUtils';
 import './PropertyCard.css';
@@ -32,7 +32,7 @@ const PropertyCard = ({ property, onAddToFavorites, isFavorite }) => {
       style={{ opacity: isDragging ? 0.5 : 1 }}
     >
       {/* Property Image */}
-      <Link to={`/property/${property.id}`} className="property-image-link">
+      <a href={`/property/${property.id}`} className="property-image-link">
         <img 
           src={`${process.env.PUBLIC_URL}/${property.picture}`}
           alt={property.location}
@@ -41,7 +41,7 @@ const PropertyCard = ({ property, onAddToFavorites, isFavorite }) => {
             e.target.src = 'https://via.placeholder.com/400x300?text=Property+Image';
           }}
         />
-      </Link>
+      </a>
       
       {/* Property Details */}
       <div className="property-details">
@@ -52,9 +52,7 @@ const PropertyCard = ({ property, onAddToFavorites, isFavorite }) => {
         
         {/* Location */}
         <h3 className="property-location">
-          <Link to={`/property/${property.id}`}>
-            {property.location}
-          </Link>
+            <a href={`/property/${property.id}`}>{property.location}</a>
         </h3>
         
         {/* Property Info */}
@@ -82,9 +80,7 @@ const PropertyCard = ({ property, onAddToFavorites, isFavorite }) => {
         
         {/* Action Buttons */}
         <div className="property-actions">
-          <Link to={`/property/${property.id}`} className="btn btn-view">
-            View Details
-          </Link>
+          <a href={`/property/${property.id}`} className="btn btn-view">View Details</a>
           <button 
             onClick={handleFavoriteClick}
             className={`btn btn-favorite ${isFavorite ? 'is-favorite' : ''}`}

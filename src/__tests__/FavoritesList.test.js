@@ -1,10 +1,25 @@
 // src/__tests__/FavoritesList.test.js
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
-import { BrowserRouter } from 'react-router-dom';
-import { DndProvider } from 'react-dnd';
-import { HTML5Backend } from 'react-dnd-html5-backend';
-import FavoritesList from '../components/FavoritesList';
+
+// Mock ESM modules before requiring the components that import them.
+jest.mock('react-dnd', () => ({
+  DndProvider: ({ children }) => children,
+  useDrag: () => [{ isDragging: false }, () => {}],
+  useDrop: () => [{ isOver: false }, () => {}],
+}));
+
+jest.mock('react-dnd-html5-backend', () => ({
+  HTML5Backend: () => ({}),
+}));
+
+// Lightweight router wrapper to avoid importing react-router-dom in tests
+const RouterWrapper = ({ children }) => <div>{children}</div>;
+
+// Require mocked modules and components after mocking to avoid ESM parsing issues
+const { DndProvider } = require('react-dnd');
+const { HTML5Backend } = require('react-dnd-html5-backend');
+const FavoritesList = require('../components/FavoritesList').default;
 
 const mockFavorites = [
   {
@@ -19,11 +34,11 @@ const mockFavorites = [
 
 const renderWithProviders = (component) => {
   return render(
-    <BrowserRouter>
+    <RouterWrapper>
       <DndProvider backend={HTML5Backend}>
         {component}
       </DndProvider>
-    </BrowserRouter>
+    </RouterWrapper>
   );
 };
 
@@ -37,7 +52,7 @@ describe('FavoritesList Component', () => {
       />
     );
     
-    expect(screen.getByText(/no favorite properties yet/i)).toBeInTheDocument();
+    expect(screen.getByText(/no favorite properties yet/i)).toBeTruthy();
   });
 
   test('displays favorites count correctly', () => {
@@ -49,7 +64,7 @@ describe('FavoritesList Component', () => {
       />
     );
     
-    expect(screen.getByText(/favorites \(1\)/i)).toBeInTheDocument();
+    expect(screen.getByText(/favorites \(1\)/i)).toBeTruthy();
   });
 
   test('displays clear all button when favorites exist', () => {
@@ -61,7 +76,7 @@ describe('FavoritesList Component', () => {
       />
     );
     
-    expect(screen.getByRole('button', { name: /clear all/i })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /clear all/i })).toBeTruthy();
   });
 
   test('calls clearFavorites when clear all button is clicked', () => {

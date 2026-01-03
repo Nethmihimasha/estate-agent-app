@@ -20,6 +20,23 @@
   align-items: center;
   margin-bottom: 1.5rem;
   padding-bottom: 1rem;
+
+/* Trash drop zone */
+.trash-zone {
+  background: #fff7f7;
+  border: 2px dashed #ff6b6b;
+  color: #8b0000;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  text-align: center;
+  margin-bottom: 1rem;
+  font-weight: 600;
+}
+
+.trash-zone.drag-over {
+  background: #ffecec;
+  box-shadow: 0 2px 8px rgba(255, 107, 107, 0.15);
+}
   border-bottom: 2px solid #e0e0e0;
 }
 

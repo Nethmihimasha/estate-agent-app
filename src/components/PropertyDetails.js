@@ -214,7 +214,13 @@ const PropertyDetails = ({
                     style={{ border: 0 }}
                     loading="lazy"
                     allowFullScreen
-                    src={`https://www.google.com/maps/embed/v1/place?key=AIzaSyBFw0Qbyq9zTFTd-tUY6dZWTgaQzuU17R8&q=${encodeURIComponent(property.location)}`}
+                    src={(() => {
+                      const mapsKey = process.env.REACT_APP_GOOGLE_MAPS_KEY;
+                      const q = encodeURIComponent(property.location);
+                      return mapsKey
+                        ? `https://www.google.com/maps/embed/v1/place?key=${mapsKey}&q=${q}`
+                        : `https://www.google.com/maps?q=${q}&output=embed`;
+                    })()}
                   />
                 </div>
               </div>

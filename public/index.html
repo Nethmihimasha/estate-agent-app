@@ -6,15 +6,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#667eea" />
     
-    <!-- Content Security Policy for client-side security -->
-    <meta http-equiv="Content-Security-Policy" 
+        <!-- Content Security Policy for client-side security
+         Note: 'unsafe-eval' removed; inline styles are still allowed for CRA dev. -->
+        <meta http-equiv="Content-Security-Policy" 
           content="default-src 'self'; 
-                   script-src 'self' 'unsafe-inline' 'unsafe-eval'; 
-                   style-src 'self' 'unsafe-inline'; 
-                   img-src 'self' data: https: blob:; 
-                   font-src 'self' data:; 
-                   connect-src 'self' https://maps.googleapis.com https://www.google.com;
-                   frame-src https://www.google.com;">
+           script-src 'self'; 
+           style-src 'self' 'unsafe-inline'; 
+           img-src 'self' data: https: blob:; 
+           font-src 'self' data:; 
+           connect-src 'self' https://maps.googleapis.com https://www.google.com;
+           frame-src https://www.google.com;">
     
     <meta name="description" content="Estate Agent Property Search - Find your dream home" />
     <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />

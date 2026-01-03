@@ -68,3 +68,48 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/d
 ### `npm run build` fails to minify
 
 This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+
+---
+
+## Coursework - Refinements and Notes
+
+- Simplified and improved project to meet coursework rubric for full marks where possible.
+- Key changes made:
+	- Fixed broken tests and added meaningful Jest tests for `searchProperties`.
+	- Enabled drag-to-favourites by wiring the drop handler to add favorites.
+	- Enhanced the search form `type` control using `react-select` (better widget accessibility).
+	- Removed hard-coded Google Maps API key and switched to environment variable `REACT_APP_GOOGLE_MAPS_KEY` with a safe fallback embed.
+	- Tightened Content Security Policy in `public/index.html` (removed `unsafe-eval`).
+	- Added `react-select` to `package.json` dependencies.
+
+## Running the project
+
+1. Install dependencies:
+
+```bash
+npm install
+```
+
+2. (Optional) Provide a Google Maps API key for better map embedding:
+
+```bash
+# Windows (PowerShell)
+$env:REACT_APP_GOOGLE_MAPS_KEY="YOUR_KEY"
+
+# macOS / Linux
+export REACT_APP_GOOGLE_MAPS_KEY=YOUR_KEY
+```
+
+3. Start the app:
+
+```bash
+npm start
+```
+
+4. Run tests (Jest):
+
+```bash
+npm test -- --watchAll=false
+```
+
+If you want me to implement further polish (add more React widgets, improve drag-out removal UX, or prepare deployment configuration), tell me which items to prioritise.

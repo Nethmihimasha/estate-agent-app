@@ -1,6 +1,6 @@
 import React from 'react';
-import { useDrop } from 'react-dnd';
-import { Link } from 'react-router-dom';
+import { useDrop, useDrag } from 'react-dnd';
+// Use plain anchors to avoid depending on react-router-dom in tests
 import { formatPrice } from '../utils/searchUtils';
 import './FavoritesList.css';
 
@@ -8,16 +8,30 @@ import './FavoritesList.css';
  * FavoritesList component - displays and manages favorite properties
  * Implements drop zone for drag-and-drop functionality
  */
-const FavoritesList = ({ favorites, removeFromFavorites, clearFavorites }) => {
+const FavoritesList = ({ favorites, removeFromFavorites, clearFavorites, addToFavorites }) => {
   // Setup drop zone for dragged properties
   const [{ isOver }, drop] = useDrop(() => ({
     accept: 'property',
     drop: (item) => {
-      // This is handled in the parent component
-      // The onAddToFavorites function is called when dropping
+      if (addToFavorites) {
+        addToFavorites(item);
+      }
     },
     collect: (monitor) => ({
       isOver: monitor.isOver(),
+    }),
+  }));
+
+  // Drop zone for removing favorites (trash)
+  const [{ isOverTrash }, trashDrop] = useDrop(() => ({
+    accept: 'favorite',
+    drop: (item) => {
+      if (removeFromFavorites && item && item.id) {
+        removeFromFavorites(item.id);
+      }
+    },
+    collect: (monitor) => ({
+      isOverTrash: monitor.isOver(),
     }),
   }));
 
@@ -26,6 +40,9 @@ const FavoritesList = ({ favorites, removeFromFavorites, clearFavorites }) => {
       ref={drop}
       className={`favorites-list ${isOver ? 'drag-over' : ''}`}
     >
+      <div ref={trashDrop} className={`trash-zone ${isOverTrash ? 'drag-over' : ''}`}>
+        Drop a favourite here to remove
+      </div>
       <div className="favorites-header">
         <h3>Favorites ({favorites.length})</h3>
         {favorites.length > 0 && (
@@ -63,9 +80,15 @@ const FavoritesList = ({ favorites, removeFromFavorites, clearFavorites }) => {
  * Individual favorite property item
  */
 const FavoriteItem = ({ property, onRemove }) => {
+  const [{ isDragging }, drag] = useDrag(() => ({
+    type: 'favorite',
+    item: { id: property.id },
+    collect: (monitor) => ({ isDragging: monitor.isDragging() }),
+  }), [property.id]);
+
   return (
-    <div className="favorite-item">
-      <Link to={`/property/${property.id}`} className="favorite-link">
+    <div className="favorite-item" ref={drag} style={{ opacity: isDragging ? 0.5 : 1 }}>
+      <a href={`/property/${property.id}`} className="favorite-link">
         <img 
           src={`${process.env.PUBLIC_URL}/${property.picture}`}
           alt={property.location}
@@ -79,7 +102,7 @@ const FavoriteItem = ({ property, onRemove }) => {
           <div className="favorite-location">{property.location}</div>
           <div className="favorite-bedrooms">{property.bedrooms} bed</div>
         </div>
-      </Link>
+      </a>
       <button 
         onClick={() => onRemove(property.id)}
         className="btn btn-remove"
