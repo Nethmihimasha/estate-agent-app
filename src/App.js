@@ -4,6 +4,7 @@ import SearchForm from './components/SearchForm';
 import PropertyDetails from './components/PropertyDetails';
 import propertiesData from './data/properties.json';
 import './App.css';
+import ScrollToTopButton from './components/ScrollToTopButton';
 
 /**
  * App
@@ -111,6 +112,7 @@ function App() {
             <p>&copy; 2025 Estate Agent Property Search. All rights reserved.</p>
           </div>
         </footer>
+        <ScrollToTopButton />
       </div>
     </Router>
   );
